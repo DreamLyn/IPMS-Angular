@@ -1,0 +1,143 @@
+<div class="table-operations">
+    <button nz-button (click)="showAddModal()">添加基站</button>
+    <button nz-button [disabled]="disabledDelete" [nzLoading]="deleteOperating" (click)="deleteDevices()">
+        删除基站
+    </button>
+    <button nz-button (click)="clearFilter()">清空筛选项</button>
+</div>
+
+<nz-table #deviceManageTable
+          nzShowTotal
+          [nzAjaxData]="_dataSet"
+          [nzLoading]="loading"
+          [nzTotal]="page.totalElements"
+          [(nzPageIndex)]="page.pageNumber"
+          [(nzPageSize)]="page.pageSize"
+          (nzPageIndexChange)="refreshData()"
+          [nzScroll]="{ y: 450 }">
+    <ng-template #nzFixedHeader>
+        <thead nz-thead>
+        <tr>
+            <th nz-th [nzCheckbox]="true">
+                <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate"
+                       (ngModelChange)="_checkAll($event)">
+                </label>
+            </th>
+            <th nz-th [nzWidth]="'150px'">
+                <span>基站ID</span>
+                <nz-table-sort (nzValueChange)="sort($event)"></nz-table-sort>
+            </th>
+            <th nz-th [nzWidth]="'100px'">
+                <span>X坐标</span>
+            </th>
+            <th nz-th [nzWidth]="'100px'">
+                <span>Y坐标</span>
+            </th>
+            <th nz-th [nzWidth]="'100px'">
+                <span>Z坐标</span>
+            </th>
+            <th nz-th [nzWidth]="'100px'">
+                <span>在顶部</span>
+                <nz-dropdown [nzTrigger]="'click'" [nzClickHide]="false">
+                    <i class="anticon anticon-filter" nz-dropdown></i>
+                    <ul nz-menu>
+                        <li nz-menu-item *ngFor="let filter of filters.top">
+                            <label nz-checkbox [(ngModel)]="filter.value" (ngModelChange)="topChange(filter)">
+                                <span>{{filter.name}}</span>
+                            </label>
+                        </li>
+                    </ul>
+                </nz-dropdown>
+            </th>
+            <th nz-th [nzWidth]="'100px'">
+                <span>用于定位</span>
+                <nz-dropdown [nzTrigger]="'click'" [nzClickHide]="false">
+                    <i class="anticon anticon-filter" nz-dropdown></i>
+                    <ul nz-menu>
+                        <li nz-menu-item *ngFor="let filter of filters.use">
+                            <label nz-checkbox [(ngModel)]="filter.value" (ngModelChange)="useChange(filter)">
+                                <span>{{filter.name}}</span>
+                            </label>
+                        </li>
+                    </ul>
+                </nz-dropdown>
+            </th>
+            <th nz-th [nzWidth]="'100px'">
+                <span>在线</span>
+                <nz-dropdown [nzTrigger]="'click'" [nzClickHide]="false">
+                    <i class="anticon anticon-filter" nz-dropdown></i>
+                    <ul nz-menu>
+                        <li nz-menu-item *ngFor="let filter of filters.online">
+                            <label nz-checkbox [(ngModel)]="filter.value" (ngModelChange)="onlineChange(filter)">
+                                <span>{{filter.name}}</span>
+                            </label>
+                        </li>
+                    </ul>
+                </nz-dropdown>
+            </th>
+            <th nz-th>
+                <span>其他操作</span>
+            </th>
+        </tr>
+        </thead>
+    </ng-template>
+    <tbody nz-tbody>
+    <tr nz-tbody-tr *ngFor="let data of deviceManageTable.data">
+        <td nz-td [nzCheckbox]="true">
+            <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="_refreshStatus($event)">
+            </label>
+        </td>
+        <td nz-td>
+            {{data.deviceId.toString(16)}}
+        </td>
+        <td nz-td>
+            <span *ngIf="editRow!==data.deviceId">{{data.x}}</span>
+            <span *ngIf="editRow===data.deviceId">
+              <nz-input [(ngModel)]="tempEditObject[data.deviceId].x"></nz-input>
+            </span>
+        </td>
+        <td nz-td>
+            <span *ngIf="editRow!==data.deviceId">{{data.y}}</span>
+            <span *ngIf="editRow===data.deviceId">
+              <nz-input [(ngModel)]="tempEditObject[data.deviceId].y"></nz-input>
+            </span>
+        </td>
+        <td nz-td>
+            <span *ngIf="editRow!==data.deviceId">{{data.z}}</span>
+            <span *ngIf="editRow===data.deviceId">
+              <nz-input [(ngModel)]="tempEditObject[data.deviceId].z"></nz-input>
+            </span>
+        </td>
+        <td nz-td>
+            <nz-switch [nzSize]="'small'" [ngModel]="data.top" [nzDisabled]="editRow!==data.deviceId"></nz-switch>
+        </td>
+        <td nz-td>
+            <nz-switch [nzSize]="'small'" [ngModel]="data.use" [nzDisabled]="editRow!==data.deviceId"></nz-switch>
+        </td>
+        <td nz-td>
+            <label nz-checkbox [(ngModel)]="data.online" [nzDisabled]="true">
+                <span *ngIf="data.online">在线</span>
+                <span *ngIf="!data.online">掉线</span>
+            </label>
+        </td>
+        <td nz-td>
+           <span *ngIf="editRow!==data.deviceId">
+              <a (click)="edit(data)">编辑</a>
+               <span nz-table-divider></span>
+               <a (click)="delete(data)">删除</a>
+               <span nz-table-divider></span>
+               <a (click)="config(data)">配置</a>
+            </span>
+
+            <span *ngIf="editRow===data.deviceId">
+                <a (click)="confirmSave(data)">确定</a>
+                <span nz-table-divider></span>
+                <a (click)="cancelEdit(data)">取消</a>
+            </span>
+        </td>
+    </tr>
+    </tbody>
+
+</nz-table>
+
+<app-devicemanageadd></app-devicemanageadd>

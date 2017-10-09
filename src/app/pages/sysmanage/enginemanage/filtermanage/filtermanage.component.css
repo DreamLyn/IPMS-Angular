@@ -1,0 +1,15 @@
+.filtermanage{
+
+}
+.filtermanage-form-label{
+    width:150px;
+    text-align: right;
+    margin-bottom: 20px;
+    padding-right: 13px;
+    color: #030b1d;
+    font-size: 14px;
+    font-weight: bold;
+}
+.filtermanage-form-item-label{
+    font-size: 14px;
+}

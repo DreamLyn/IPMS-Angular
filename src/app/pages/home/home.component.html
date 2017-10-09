@@ -1,0 +1,51 @@
+<nz-layout class="layout" style="height: 100%;min-width: 1250px">
+    <ul nz-menu [nzMode]="'horizontal'">
+       <li style="float:left;font-size:17px;color:#11031d;margin-left:20px;cursor: pointer;">
+           室内定位系统管理平台
+       </li>
+        <li nz-submenu>
+            <span title><i class="anticon anticon-setting"></i> Navigation Three - Submenu</span>
+            <ul>
+                <li nz-menu-group>
+                    <span title>Item 1</span>
+                    <ul>
+                        <li nz-menu-item>Option 1</li>
+                        <li nz-menu-item>Option 2</li>
+                    </ul>
+                </li>
+                <li nz-menu-group>
+                    <span title>Item 2</span>
+                    <ul>
+                        <li nz-menu-item>Option 3</li>
+                        <li nz-menu-item>Option 4</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+
+    <nz-layout style="height: 100%;">
+        <nz-sider [nzWidth]="200">
+            <ul nz-menu [nzMode]="'inline'" style="height:100%">
+                <li nz-submenu *ngFor="let items of leftMenu" [nzOpen]="items.open">
+                    <span title><i [ngClass]="items.icon"></i>{{items.text}}</span>
+                    <ul>
+                        <li nz-menu-item *ngFor="let item of items.children" (click)="itemSelect(items.url+item.url)" [nzSelected]="item.selected">
+                            <span title>{{item.text}}</span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nz-sider>
+        <nz-layout>
+            <nz-content
+                style="background:#fff; padding: 12px; margin:12px;margin-bottom:20px;height: 100%;overflow-y: auto">
+                <router-outlet></router-outlet>
+            </nz-content>
+        </nz-layout>
+    </nz-layout>
+</nz-layout>
+
+
+

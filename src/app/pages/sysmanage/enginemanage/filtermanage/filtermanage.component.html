@@ -1,0 +1,173 @@
+<div class="filtermanage">
+    <!--<form>-->
+        <!--<md-form-field class="enginemanage-form-full-width">-->
+            <!--<input mdInput placeholder="信号强度阈值" [value]="filterInfo.rssi">-->
+        <!--</md-form-field>-->
+        <!--<md-form-field class="enginemanage-form-full-width">-->
+            <!--<input mdInput placeholder="首径信号强度阈值" [value]="filterInfo.firstrssi">-->
+        <!--</md-form-field>-->
+        <!--<md-form-field class="enginemanage-form-full-width">-->
+            <!--<input mdInput placeholder="信号强度与首径信号强度差阈值" [value]="filterInfo.rssidiff">-->
+        <!--</md-form-field>-->
+        <!--<md-form-field class="enginemanage-form-full-width">-->
+            <!--<input mdInput placeholder="时间戳变化阈值" [value]="filterInfo.timdiff">-->
+        <!--</md-form-field>-->
+        <!--<md-form-field class="enginemanage-form-full-width">-->
+            <!--<input mdInput placeholder="设备间距离阈值" [value]="filterInfo.distance">-->
+        <!--</md-form-field>-->
+        <!--<md-form-field class="enginemanage-form-full-width">-->
+            <!--<input mdInput placeholder="设备间角度阈值" [value]="filterInfo.angle">-->
+        <!--</md-form-field>-->
+        <!--<md-form-field class="enginemanage-form-full-width">-->
+            <!--<input mdInput placeholder="前置滤波方式" [value]="filterInfo.prefilter">-->
+        <!--</md-form-field>-->
+        <!--<md-form-field class="enginemanage-form-full-width">-->
+            <!--<input mdInput placeholder="前置滤波数据量" [value]="filterInfo.filterlength">-->
+        <!--</md-form-field>-->
+        <!--<md-form-field class="enginemanage-form-full-width">-->
+            <!--<input mdInput placeholder="残差滤波阈值" [value]="filterInfo.excursion">-->
+        <!--</md-form-field>-->
+        <!--<md-form-field class="enginemanage-form-full-width">-->
+            <!--<input mdInput placeholder="非参数滤波数据量" [value]="filterInfo.filterlength2">-->
+        <!--</md-form-field>-->
+
+        <!--<md-form-field class="enginemanage-form-full-width">-->
+            <!--<input mdInput placeholder="非参数滤波延迟" [value]="filterInfo.filterdelay">-->
+        <!--</md-form-field>-->
+
+    <!--</form>-->
+
+
+    <form nz-form [formGroup]="filterForm" (ngSubmit)="submitForm()" [nzType]="'horizontal'" style="width:600px">
+
+        <div class="filtermanage-form-label">信号强度过滤</div>
+
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                <label class="filtermanage-form-item-label">信号强度差阈值</label>
+            </div>
+            <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('rssidiff')">
+                <nz-input [nzSize]="'large'" formControlName="rssidiff" [nzPlaceHolder]="'请输入信号强度差阈值'"></nz-input>
+                <div nz-form-explain *ngIf="getFormControl('rssidiff').dirty&&getFormControl('rssidiff').hasError('rssidiff')">信号强度差阈值的取值范围为0-100!</div>
+            </div>
+        </div>
+
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                <label class="filtermanage-form-item-label">信号强度阈值</label>
+            </div>
+            <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('rssi')">
+                <nz-input [nzSize]="'large'" formControlName="rssi" [nzPlaceHolder]="'请输入信号强度阈值'"></nz-input>
+                <div nz-form-explain *ngIf="getFormControl('rssi').dirty&&getFormControl('rssi').hasError('rssi')">The input is not valid E-mail!</div>
+            </div>
+        </div>
+
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                <label class="filtermanage-form-item-label">首径信号强度阈值</label>
+            </div>
+            <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('firstrssi')">
+                <nz-input [nzSize]="'large'" formControlName="firstrssi" [nzPlaceHolder]="'请输入首径信号强度阈值'"></nz-input>
+                <div nz-form-explain *ngIf="getFormControl('firstrssi').dirty&&getFormControl('firstrssi').hasError('firstrssi')">The input is not valid E-mail!</div>
+            </div>
+        </div>
+        <div class="filtermanage-form-label">设备筛选</div>
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                <label class="filtermanage-form-item-label">时间戳变化阈值</label>
+            </div>
+            <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('timdiff')">
+                <nz-input [nzSize]="'large'" formControlName="timdiff" [nzPlaceHolder]="'请输入时间戳变化阈值'"></nz-input>
+                <div nz-form-explain *ngIf="getFormControl('timdiff').dirty&&getFormControl('timdiff').hasError('timdiff')">The input is not valid E-mail!</div>
+            </div>
+        </div>
+
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                <label class="filtermanage-form-item-label">设备间距离阈值</label>
+            </div>
+            <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('distance')">
+                <nz-input [nzSize]="'large'" formControlName="distance" [nzPlaceHolder]="'请输入设备间距离阈值'"></nz-input>
+                <div nz-form-explain *ngIf="getFormControl('distance').dirty&&getFormControl('distance').hasError('distance')">The input is not valid E-mail!</div>
+            </div>
+        </div>
+
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                <label class="filtermanage-form-item-label">设备间角度阈值</label>
+            </div>
+            <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('angle')">
+                <nz-input [nzSize]="'large'" formControlName="angle" [nzPlaceHolder]="'请输入设备间角度阈值'"></nz-input>
+                <div nz-form-explain *ngIf="getFormControl('angle').dirty&&getFormControl('angle').hasError('angle')">The input is not valid E-mail!</div>
+            </div>
+        </div>
+        <div class="filtermanage-form-label">前置滤波配置</div>
+
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                <label class="filtermanage-form-item-label">滤波方式</label>
+            </div>
+            <div nz-form-control nz-col [nzSm]="14" [nzXs]="24">
+                <nz-radio-group formControlName="prefilter">
+                    <label nz-radio [nzValue]="'中值滤波'">
+                        <span>中值滤波</span>
+                    </label>
+                    <label nz-radio [nzValue]="'高斯滤波'">
+                        <span>高斯滤波</span>
+                    </label>
+                </nz-radio-group>
+            </div>
+        </div>
+
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                <label class="filtermanage-form-item-label">前置滤波数据量</label>
+            </div>
+            <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('filterlength')">
+                <nz-input [nzSize]="'large'" formControlName="filterlength" [nzPlaceHolder]="'请输入前置滤波数据量'"></nz-input>
+                <div nz-form-explain *ngIf="getFormControl('filterlength').dirty&&getFormControl('filterlength').hasError('filterlength')">The input is not valid E-mail!</div>
+            </div>
+        </div>
+
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                <label class="filtermanage-form-item-label">残差滤波阈值</label>
+            </div>
+            <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('excursion')">
+                <nz-input [nzSize]="'large'" formControlName="excursion" [nzPlaceHolder]="'请输入残差滤波阈值'"></nz-input>
+                <div nz-form-explain *ngIf="getFormControl('excursion').dirty&&getFormControl('excursion').hasError('excursion')">The input is not valid E-mail!</div>
+            </div>
+        </div>
+
+        <div class="filtermanage-form-label">非参数滤波配置</div>
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                <label class="filtermanage-form-item-label">非参数滤波数据量</label>
+            </div>
+            <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('filterlength2')">
+                <nz-input [nzSize]="'large'" formControlName="filterlength2" [nzPlaceHolder]="'请输入非参数滤波数据量'"></nz-input>
+                <div nz-form-explain *ngIf="getFormControl('filterlength2').dirty&&getFormControl('filterlength2').hasError('filterlength2')">The input is not valid E-mail!</div>
+            </div>
+        </div>
+
+
+        <div nz-form-item nz-row>
+            <div nz-form-label nz-col [nzSm]="6" [nzXs]="24">
+                <label class="filtermanage-form-item-label">非参数滤波延迟</label>
+            </div>
+            <div nz-form-control nz-col [nzSm]="14" [nzXs]="24" nzHasFeedback [nzValidateStatus]="getFormControl('filterdelay')">
+                <nz-input [nzSize]="'large'" formControlName="filterdelay" [nzPlaceHolder]="'请输入非参数滤波延迟'"></nz-input>
+                <div nz-form-explain *ngIf="getFormControl('filterdelay').dirty&&getFormControl('filterdelay').hasError('filterdelay')">The input is not valid E-mail!</div>
+            </div>
+        </div>
+
+        <div nz-form-item nz-row style="margin-bottom:8px;">
+            <div nz-form-control nz-col [nzSpan]="14" [nzOffset]="6">
+                <button nz-button [nzSize]="'large'" [nzType]="'primary'">提交</button>
+                <button nz-button [nzSize]="'large'" (click)="resetForm()" style="margin-left:20px;">刷新</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+

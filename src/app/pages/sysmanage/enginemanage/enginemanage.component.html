@@ -1,0 +1,10 @@
+<nz-tabset [nzTabPosition]="_position">
+    <nz-tab *ngFor="let tab of tabs">
+        <ng-template #nzTabHeading>
+            {{tab.text}}
+        </ng-template>
+        <span [ngSwitch]="tab.index">
+        <app-filtermanage *ngSwitchCase="1"></app-filtermanage>
+        </span>
+    </nz-tab>
+</nz-tabset>
